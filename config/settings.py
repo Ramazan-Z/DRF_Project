@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Created apps
     "rest_framework",
+    "django_filters",
     "materials",
     "users",
 ]
@@ -107,10 +108,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Модель пользователя
 AUTH_USER_MODEL = "users.User"
 
-# Настройка ограничений доступа
+# Настройка REST
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-    ]
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
 }
