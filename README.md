@@ -30,6 +30,7 @@
 * `django-stubs`
 * `djangorestframework-stubs`
 * `types-psycopg2`
+* `django-filter-stubs`
 ## Зависимости
 * `django`
 * `djangorestframework`
