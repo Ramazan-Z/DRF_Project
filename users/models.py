@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from materials.models import Course, Lesson
+
 
 class User(AbstractUser):
 
@@ -40,3 +42,61 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+
+class Pyment(models.Model):
+
+    PAYMENT_METHOD_CHOICES = [
+        ("cach", "Наличными"),
+        ("transfer", "Перевод на счет"),
+    ]
+
+    user: models.Field = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        help_text="Укажите пользователя",
+        related_name="pyments_user",
+    )
+    created_at: models.Field = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата платежа",
+    )
+    course: models.Field = models.ForeignKey(
+        Course,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="Оплаченный курс",
+        help_text="Укажите курс для оплаты",
+        related_name="pyments_course",
+    )
+    lesson: models.Field = models.ForeignKey(
+        Lesson,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="Оплаченный урок",
+        help_text="Укажите урок для оплаты",
+        related_name="pyments_lesson",
+    )
+    amount: models.Field = models.PositiveIntegerField(
+        verbose_name="Сумма платежа",
+        help_text="Укажите сумму платежа",
+    )
+    pyment_method: models.Field = models.CharField(
+        max_length=8,
+        choices=PAYMENT_METHOD_CHOICES,
+        blank=True,
+        default="cach",
+        verbose_name="Способ платежа",
+        help_text="Укажите способ платежа",
+    )
+
+    def __str__(self) -> str:
+        return f"{self.created_at}: {self.course if self.course else self.lesson}"
+
+    class Meta:
+        verbose_name = "Платеж"
+        verbose_name_plural = "Платежи"
+        ordering = ["created_at"]

@@ -1,3 +1,4 @@
+from django.urls import path
 from rest_framework import routers
 
 from users import views
@@ -6,6 +7,8 @@ from users.apps import UsersConfig
 app_name = UsersConfig.name
 
 router = routers.DefaultRouter()
-router.register("", views.UserViewSet, basename="users")
+router.register(r"users", views.UserViewSet, basename="users")
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("pyments/", views.PymentsList.as_view(), name="pyments-list"),
+] + router.urls
