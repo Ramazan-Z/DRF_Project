@@ -4,9 +4,9 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$870000$uVzmapzgtGU3YagCaOU9T6$xo3QhXlJoWoNcMEWfP1+vGVQ2G7d/EDdNF7ogzR5JiY=",
-        "last_login": "2024-11-15T04:08:31.120Z",
+        "last_login": "2024-11-20T07:13:31.547Z",
         "is_superuser": true,
-        "username": "",
+        "username": "admin",
         "first_name": "",
         "last_name": "",
         "is_staff": true,
@@ -84,75 +84,47 @@
     }
 },
 {
-    "model": "users.pyment",
-    "pk": 2,
-    "fields": {
-        "user": 2,
-        "created_at": "2024-11-15T06:54:11.199Z",
-        "course": null,
-        "lesson": 4,
-        "amount": 2000,
-        "pyment_method": "cach"
-    }
-},
-{
-    "model": "users.pyment",
-    "pk": 3,
-    "fields": {
-        "user": 2,
-        "created_at": "2024-11-15T06:54:48.259Z",
-        "course": null,
-        "lesson": 5,
-        "amount": 3000,
-        "pyment_method": "cach"
-    }
-},
-{
-    "model": "users.pyment",
-    "pk": 4,
-    "fields": {
-        "user": 3,
-        "created_at": "2024-11-15T06:55:22.720Z",
-        "course": 3,
-        "lesson": null,
-        "amount": 50000,
-        "pyment_method": "transfer"
-    }
-},
-{
-    "model": "users.pyment",
+    "model": "users.user",
     "pk": 5,
     "fields": {
-        "user": 4,
-        "created_at": "2024-11-15T06:56:10.773Z",
-        "course": null,
-        "lesson": 7,
-        "amount": 4000,
-        "pyment_method": "transfer"
+        "password": "pbkdf2_sha256$870000$d3g0v8YqvvKhJbzmglCFNN$+DUGpmfH5iZ1rckipvQWBvymtJJ2eb37uNVE+676oik=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "moderator",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-20T03:59:43.095Z",
+        "email": "moderator@sky.pro",
+        "phone_number": null,
+        "sity": null,
+        "avatar": "",
+        "groups": [
+            1
+        ],
+        "user_permissions": []
     }
 },
 {
-    "model": "users.pyment",
+    "model": "users.user",
     "pk": 6,
     "fields": {
-        "user": 4,
-        "created_at": "2024-11-15T06:56:41.475Z",
-        "course": null,
-        "lesson": 8,
-        "amount": 5000,
-        "pyment_method": "transfer"
-    }
-},
-{
-    "model": "users.pyment",
-    "pk": 7,
-    "fields": {
-        "user": 4,
-        "created_at": "2024-11-15T06:57:06.084Z",
-        "course": null,
-        "lesson": 9,
-        "amount": 6000,
-        "pyment_method": "cach"
+        "password": "pbkdf2_sha256$870000$1dgicrrL8se7rNOgxVbJQ9$/52CHHt1ksAUEvZiv5qvYeJLGQmRijByuaF42V2ltbI=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-11-20T03:59:58.320Z",
+        "email": "user@sky.pro",
+        "phone_number": null,
+        "sity": null,
+        "avatar": "",
+        "groups": [],
+        "user_permissions": []
     }
 }
 ]

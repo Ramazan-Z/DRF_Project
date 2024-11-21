@@ -5,7 +5,8 @@
     "fields": {
         "name": "Кулинарные курсы",
         "description": "Быстро и вкусно",
-        "preview": ""
+        "preview": "",
+        "owner": 2
     }
 },
 {
@@ -14,7 +15,8 @@
     "fields": {
         "name": "Курсы програмирования",
         "description": "Язык Python",
-        "preview": ""
+        "preview": "",
+        "owner": 4
     }
 },
 {
@@ -23,7 +25,18 @@
     "fields": {
         "name": "Юридический курс",
         "description": "Основы права",
-        "preview": ""
+        "preview": "",
+        "owner": 3
+    }
+},
+{
+    "model": "materials.course",
+    "pk": 4,
+    "fields": {
+        "name": "Курсы вождения",
+        "description": "Категория B",
+        "preview": "",
+        "owner": 6
     }
 },
 {
@@ -34,7 +47,8 @@
         "description": "КоАП и УК",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 3
+        "course": 3,
+        "owner": 3
     }
 },
 {
@@ -45,7 +59,8 @@
         "description": "Семейный кодекс",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 3
+        "course": 3,
+        "owner": 3
     }
 },
 {
@@ -56,7 +71,8 @@
         "description": "Охрана труда",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 3
+        "course": 3,
+        "owner": 3
     }
 },
 {
@@ -67,7 +83,8 @@
         "description": "Виды супов",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 1
+        "course": 1,
+        "owner": 2
     }
 },
 {
@@ -78,7 +95,8 @@
         "description": "Простые рецепты",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 1
+        "course": 1,
+        "owner": 2
     }
 },
 {
@@ -89,7 +107,8 @@
         "description": "Печенье, торты, выпечка",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 1
+        "course": 1,
+        "owner": 2
     }
 },
 {
@@ -100,7 +119,8 @@
         "description": "Основы алгоритмов",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 2
+        "course": 2,
+        "owner": 4
     }
 },
 {
@@ -111,7 +131,8 @@
         "description": "Типы данных, операторы",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 2
+        "course": 2,
+        "owner": 4
     }
 },
 {
@@ -122,7 +143,20 @@
         "description": "Условия и циклы",
         "preview": "",
         "video_link": "http://example.ru",
-        "course": 2
+        "course": 2,
+        "owner": 4
+    }
+},
+{
+    "model": "materials.lesson",
+    "pk": 10,
+    "fields": {
+        "name": "Начало движения",
+        "description": "Посадка и трогание с места",
+        "preview": "",
+        "video_link": "http://example.ru",
+        "course": 4,
+        "owner": 6
     }
 }
 ]
