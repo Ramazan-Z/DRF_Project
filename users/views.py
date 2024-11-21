@@ -32,8 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return serializers.UserSelfSerializer
         return serializers.UserSerializer
 
-    @staticmethod
-    def perform_create(serializer: BaseSerializer) -> Any:
+    def perform_create(self, serializer: BaseSerializer) -> Any:
         """Регистрация пользователя"""
         user = serializer.save()
         user.set_password(user.password)

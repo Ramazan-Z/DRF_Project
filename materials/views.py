@@ -31,7 +31,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
 
-    def list(self, request: Request) -> Response:
+    def list(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """Фильтрация чужих курсов из списка"""
         user = request.user
         if user.groups.filter(name="Moderators").exists() or user.is_superuser:
