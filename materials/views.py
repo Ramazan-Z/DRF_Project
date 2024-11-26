@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
 from materials import serializers
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscription
 from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
 
@@ -84,3 +84,34 @@ class LessonDestroy(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = serializers.LessonSerializer
     permission_classes = [IsAuthenticated, IsOwnerUser]
+
+
+class SubscriptionsList(generics.ListAPIView):
+    serializer_class = serializers.SubscriptionSerializer
+
+    def get_queryset(self) -> Any:
+        """Фильтрация чужих подписок из списка"""
+        user = self.request.user
+        if user.groups.filter(name="Moderators").exists() or user.is_superuser:
+            return Subscription.objects.all()
+        return Subscription.objects.filter(user=user)
+
+
+class CourseSubscribe(generics.GenericAPIView):
+    queryset = Subscription.objects.all()
+
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        """Создание/удаление подписки по запросу"""
+        user = self.request.user
+        course_pk = self.kwargs.get("course_pk")
+        course = generics.get_object_or_404(Course.objects.all(), pk=course_pk)
+        subscription = self.get_queryset().filter(user=user, course=course)
+
+        if subscription.exists():
+            subscription.delete()
+            message = "Подписка удалена"
+        else:
+            Subscription.objects.create(user=user, course=course)
+            message = "Подписка добавлена"
+
+        return Response({"message": message})
