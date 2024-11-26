@@ -3,12 +3,14 @@ from typing import Any
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from materials.models import Course, Lesson
+from materials.validators import VideoLinkValidator
 
 
 class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
+        validators = [VideoLinkValidator(field="video_link")]
 
 
 class CourseSerializer(ModelSerializer):
