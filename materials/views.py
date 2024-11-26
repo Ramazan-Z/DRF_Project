@@ -8,12 +8,14 @@ from rest_framework.serializers import BaseSerializer
 
 from materials import serializers
 from materials.models import Course, Lesson
+from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    pagination_class = ListPagination
 
     def perform_create(self, serializer: BaseSerializer) -> Any:
         """Назначение владельца при создании курса"""
@@ -38,12 +40,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             queryset = self.get_queryset()
         else:
             queryset = self.get_queryset().filter(owner=user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        # Востановление пагинации
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class LessonList(generics.ListAPIView):
     serializer_class = serializers.LessonSerializer
+    pagination_class = ListPagination
 
     def get_queryset(self) -> Any:
         """Фильтрация чужих уроков из списка"""
