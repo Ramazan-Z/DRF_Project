@@ -16,7 +16,15 @@ class UserTestCase(APITestCase):
     def test_users_list(self) -> None:
         """Тест списка пользователей"""
         url = reverse("users:users-list")
-        expected_response = [{"id": 1, "email": "user@sky.pro", "username": "user", "sity": None, "avatar": None}]
+        expected_response = [
+            {
+                "id": self.user.pk,
+                "email": "user@sky.pro",
+                "username": "user",
+                "sity": None,
+                "avatar": None,
+            }
+        ]
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expected_response)

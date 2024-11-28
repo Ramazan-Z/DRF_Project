@@ -31,13 +31,13 @@ class LessonTestCase(APITestCase):
             "previous": None,
             "results": [
                 {
-                    "id": 1,
+                    "id": self.lesson.pk,
                     "name": "lesson",
                     "description": "lesson_description",
                     "preview": None,
                     "video_link": "https://youtube.com",
-                    "course": 1,
-                    "owner": 1,
+                    "course": self.course.pk,
+                    "owner": self.user.pk,
                 },
             ],
         }
@@ -49,13 +49,13 @@ class LessonTestCase(APITestCase):
         """Тест одного урока"""
         url = reverse("materials:lessons-retrieve", args=(self.lesson.pk,))
         expected_response = {
-            "id": 1,
+            "id": self.lesson.pk,
             "name": "lesson",
             "description": "lesson_description",
             "preview": None,
             "video_link": "https://youtube.com",
-            "course": 1,
-            "owner": 1,
+            "course": self.course.pk,
+            "owner": self.user.pk,
         }
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -68,12 +68,12 @@ class LessonTestCase(APITestCase):
             "name": "lesson2",
             "description": "lesson_description2",
             "video_link": "https://youtube.com/2/",
-            "course": 1,
+            "course": self.course.pk,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Lesson.objects.all().count(), 2)
-        self.assertEqual(Lesson.objects.get(pk=2).owner, self.user)
+        self.assertEqual(Lesson.objects.get(pk=response.json().get("id")).owner, self.user)
 
     def test_lesson_update(self) -> None:
         """Тест редактирования урока"""
@@ -120,24 +120,24 @@ class CourseTestCase(APITestCase):
             "previous": None,
             "results": [
                 {
-                    "id": 1,
+                    "id": self.course.pk,
                     "subscribed": True,
                     "lessons_count": 1,
                     "lessons": [
                         {
-                            "id": 1,
+                            "id": self.lesson.pk,
                             "name": "lesson",
                             "description": "lesson_description",
                             "preview": None,
                             "video_link": "https://youtube.com",
-                            "course": 1,
-                            "owner": 1,
+                            "course": self.course.pk,
+                            "owner": self.user.pk,
                         },
                     ],
                     "name": "course",
                     "description": "course_description",
                     "preview": None,
-                    "owner": 1,
+                    "owner": self.user.pk,
                 },
             ],
         }
@@ -154,19 +154,19 @@ class CourseTestCase(APITestCase):
             "lessons_count": 1,
             "lessons": [
                 {
-                    "id": 1,
+                    "id": self.course.pk,
                     "name": "lesson",
                     "description": "lesson_description",
                     "preview": None,
                     "video_link": "https://youtube.com",
-                    "course": 1,
-                    "owner": 1,
+                    "course": self.course.pk,
+                    "owner": self.user.pk,
                 },
             ],
             "name": "course",
             "description": "course_description",
             "preview": None,
-            "owner": 1,
+            "owner": self.user.pk,
         }
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -182,7 +182,7 @@ class CourseTestCase(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Course.objects.all().count(), 2)
-        self.assertEqual(Course.objects.get(pk=2).owner, self.user)
+        self.assertEqual(Course.objects.get(pk=response.json().get("id")).owner, self.user)
 
     def test_course_update(self) -> None:
         """Тест редактирования курса"""
@@ -216,9 +216,9 @@ class SubscriptionTestCase(APITestCase):
         url = reverse("materials:subscriptions-list")
         expected_response = [
             {
-                "id": 1,
-                "course": 1,
-                "user": 1,
+                "id": self.subscription.pk,
+                "course": self.course.pk,
+                "user": self.user.pk,
             },
         ]
         response = self.client.get(url)
