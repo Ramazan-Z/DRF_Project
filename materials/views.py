@@ -7,13 +7,15 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
 from materials import serializers
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscription
+from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    pagination_class = ListPagination
 
     def perform_create(self, serializer: BaseSerializer) -> Any:
         """Назначение владельца при создании курса"""
@@ -38,12 +40,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             queryset = self.get_queryset()
         else:
             queryset = self.get_queryset().filter(owner=user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        # Востановление пагинации
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class LessonList(generics.ListAPIView):
     serializer_class = serializers.LessonSerializer
+    pagination_class = ListPagination
 
     def get_queryset(self) -> Any:
         """Фильтрация чужих уроков из списка"""
@@ -79,3 +84,34 @@ class LessonDestroy(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = serializers.LessonSerializer
     permission_classes = [IsAuthenticated, IsOwnerUser]
+
+
+class SubscriptionsList(generics.ListAPIView):
+    serializer_class = serializers.SubscriptionSerializer
+
+    def get_queryset(self) -> Any:
+        """Фильтрация чужих подписок из списка"""
+        user = self.request.user
+        if user.groups.filter(name="Moderators").exists() or user.is_superuser:
+            return Subscription.objects.all()
+        return Subscription.objects.filter(user=user)
+
+
+class CourseSubscribe(generics.GenericAPIView):
+    queryset = Subscription.objects.all()
+
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        """Создание/удаление подписки по запросу"""
+        user = self.request.user
+        course_pk = self.kwargs.get("course_pk")
+        course = generics.get_object_or_404(Course.objects.all(), pk=course_pk)
+        subscription = self.get_queryset().filter(user=user, course=course)
+
+        if subscription.exists():
+            subscription.delete()
+            message = "Подписка удалена"
+        else:
+            Subscription.objects.create(user=user, course=course)
+            message = "Подписка добавлена"
+
+        return Response({"message": message})

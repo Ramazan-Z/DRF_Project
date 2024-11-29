@@ -15,4 +15,6 @@ urlpatterns = [
     path("lessons/create/", views.LessonCreate.as_view(), name="lessons-create"),
     path("lessons/<int:pk>/update/", views.LessonUpdate.as_view(), name="lessons-update"),
     path("lessons/<int:pk>/delete/", views.LessonDestroy.as_view(), name="lessons-delete"),
+    path("subscriptions/", views.SubscriptionsList.as_view(), name="subscriptions-list"),
+    path("subscriptions/<int:course_pk>/", views.CourseSubscribe.as_view(), name="courses-subscribe"),
 ] + router.urls
