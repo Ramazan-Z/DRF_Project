@@ -57,6 +57,7 @@
 * `django-filter`
 * `djangorestframework-simplejwt`
 * `drf-yasg`
+* `stripe`
 ## Установка
 1. Клонировать проект
 	```
