@@ -29,8 +29,9 @@ class UserViewSet(viewsets.ModelViewSet):
             return serializers.UserSerializer
         if self.action in ("create", "update", "partial_update"):
             return serializers.UserRegisterSerializer
-        if self.get_object() == self.request.user:
-            return serializers.UserSelfSerializer
+        #if self.kwargs.get("id", ) == self.request.user:
+            #return serializers.UserSelfSerializer
+        print(self.kwargs)
         return serializers.UserSerializer
 
     def perform_create(self, serializer: BaseSerializer) -> Any:

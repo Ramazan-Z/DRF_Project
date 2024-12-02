@@ -1,5 +1,7 @@
 from typing import Any
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -10,6 +12,9 @@ from materials import serializers
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
+from materials.serializers import Subscribe
+
+docs_response = openapi.Response("Создание/удаление подписки по запросу", Subscribe)
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -100,6 +105,7 @@ class SubscriptionsList(generics.ListAPIView):
 class CourseSubscribe(generics.GenericAPIView):
     queryset = Subscription.objects.all()
 
+    @swagger_auto_schema(responses={200: docs_response})
     def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """Создание/удаление подписки по запросу"""
         user = self.request.user
