@@ -56,6 +56,7 @@
 * `psycopg2-binary`
 * `django-filter`
 * `djangorestframework-simplejwt`
+* `drf-yasg`
 ## Установка
 1. Клонировать проект
 	```
