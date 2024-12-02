@@ -29,9 +29,8 @@ class UserViewSet(viewsets.ModelViewSet):
             return serializers.UserSerializer
         if self.action in ("create", "update", "partial_update"):
             return serializers.UserRegisterSerializer
-        #if self.kwargs.get("id", ) == self.request.user:
-            #return serializers.UserSelfSerializer
-        print(self.kwargs)
+        if self.kwargs.get("pk") == self.request.user.pk:
+            return serializers.UserSelfSerializer
         return serializers.UserSerializer
 
     def perform_create(self, serializer: BaseSerializer) -> Any:
@@ -42,6 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class PaymentsList(generics.ListAPIView):
+    queryset = Pyment.objects.all()
     serializer_class = serializers.PaymentSerializer
 
     filter_backends = (OrderingFilter, DjangoFilterBackend)

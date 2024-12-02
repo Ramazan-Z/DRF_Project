@@ -12,9 +12,8 @@ from materials import serializers
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
-from materials.serializers import Subscribe
 
-docs_response = openapi.Response("Создание/удаление подписки по запросу", Subscribe)
+docs_response = openapi.Response("Создание/удаление подписки по запросу", serializers.Subscribe)
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -104,6 +103,7 @@ class SubscriptionsList(generics.ListAPIView):
 
 class CourseSubscribe(generics.GenericAPIView):
     queryset = Subscription.objects.all()
+    serializer_class = serializers.Subscribe
 
     @swagger_auto_schema(responses={200: docs_response})
     def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
