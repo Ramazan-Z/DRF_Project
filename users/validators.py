@@ -11,5 +11,5 @@ def payment_create_validator(data: dict[str, Any]) -> None:
 
 def payment_amount_validator(data: dict[str, Any]) -> None:
     """Валидатор суммы платежа"""
-    if data["amount"] < 50:
-        raise ValidationError("Минимальный платеж 50 руб.")
+    if data["amount"] < 100:
+        raise ValidationError("Минимальный платеж 100 руб.")

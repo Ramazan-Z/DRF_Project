@@ -33,6 +33,12 @@ class UserViewSet(viewsets.ModelViewSet):
             return serializers.UserSelfSerializer
         return serializers.UserSerializer
 
+    def perform_create(self, serializer: BaseSerializer) -> Any:
+        """Регистрация пользователя"""
+        user = serializer.save()
+        user.set_password(user.password)
+        user.save()
+
 
 class PaymentsList(generics.ListAPIView):
     serializer_class = serializers.PaymentSerializer
