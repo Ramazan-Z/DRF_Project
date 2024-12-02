@@ -1,12 +1,13 @@
 from typing import Any
 
+from django.http import HttpRequest, HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.serializers import BaseSerializer
 
-from users import serializers
+from users import serializers, services
 from users.models import Pyment, User
 from users.permissions import ProfilePermissionsClass
 
@@ -32,12 +33,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return serializers.UserSelfSerializer
         return serializers.UserSerializer
 
-    def perform_create(self, serializer: BaseSerializer) -> Any:
-        """Регистрация пользователя"""
-        user = serializer.save()
-        user.set_password(user.password)
-        user.save()
-
 
 class PaymentsList(generics.ListAPIView):
     serializer_class = serializers.PaymentSerializer
@@ -52,3 +47,23 @@ class PaymentsList(generics.ListAPIView):
         if user.groups.filter(name="Moderators").exists() or user.is_superuser:
             return Pyment.objects.all()
         return Pyment.objects.filter(user=user)
+
+
+class PaymentCreateView(generics.CreateAPIView):
+    queryset = Pyment.objects.all()
+    serializer_class = serializers.PaymentCreateSerializer
+
+    def perform_create(self, serializer: BaseSerializer) -> Any:
+        """Создание объекта платежа"""
+        payment = serializer.save(user=self.request.user, pyment_method="transfer")
+        product = services.get_or_create_product(payment)
+        price = services.create_price(product, payment.amount)
+        session = services.create_session(price, payment.user, self.request._current_scheme_host)
+        payment.session_id = session.id
+        payment.payment_url = session.url
+        payment.save()
+
+
+def success_pay(request: HttpRequest) -> HttpResponse:
+    """Контроллер страницы успешной оплаты"""
+    return HttpResponse("Спасибо, Ваш платеж успешно выполнен")
