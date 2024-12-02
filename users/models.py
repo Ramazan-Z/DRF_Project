@@ -92,6 +92,18 @@ class Pyment(models.Model):
         verbose_name="Способ платежа",
         help_text="Укажите способ платежа",
     )
+    session_id: models.Field = models.CharField(
+        max_length=300,
+        blank=True,
+        null=True,
+        verbose_name="Идентификатор платежа",
+    )
+    payment_url: models.Field = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на платеж",
+    )
 
     def __str__(self) -> str:
         return f"{self.created_at}: {self.course if self.course else self.lesson}"
