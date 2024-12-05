@@ -12,6 +12,7 @@ from materials import serializers
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import ListPagination
 from materials.permissions import IsModeratorUser, IsOwnerUser
+from materials.tasks import notify_users
 
 docs_response = openapi.Response("Создание/удаление подписки по запросу", serializers.Subscribe)
 
@@ -24,6 +25,11 @@ class CourseViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer: BaseSerializer) -> Any:
         """Назначение владельца при создании курса"""
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer: BaseSerializer) -> Any:
+        """Вызов оповещения пользователей при обновлении курса"""
+        super().perform_update(serializer)
+        notify_users.delay(serializer.data)
 
     def get_permissions(self) -> Any:
         """Права доступа в зависимости от действия"""

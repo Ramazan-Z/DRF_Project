@@ -88,6 +88,14 @@
 	```
 	python manage.py start_test_db
 	```
+ 5. Запустить Celery
+    ```
+	celery -A config worker -l INFO
+	```
+6. Запустить Celery-beat
+    ```
+	celery -A config beat -l INFO
+	```
 ## Тестирование
 	* Запуск теста: `coverage run --source='.' manage.py test`
 	* Покрытие кода: `coverage report`

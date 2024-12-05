@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_yasg",
     "django_filters",
-    "django_celery_beat" "materials",
+    "django_celery_beat",
+    "materials",
     "users",
 ]
 
