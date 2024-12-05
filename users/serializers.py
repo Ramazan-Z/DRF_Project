@@ -1,14 +1,24 @@
-from rest_framework.serializers import ModelSerializer
+from typing import Any
 
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+
+from users import services
 from users.models import Pyment, User
+from users.validators import payment_amount_validator, payment_create_validator
 
 
 class PaymentSerializer(ModelSerializer):
     """Сериализатор просмотра платежей"""
 
+    status = SerializerMethodField()
+
+    @staticmethod
+    def get_status(payment: Pyment) -> Any:
+        return services.get_session_status(payment)
+
     class Meta:
         model = Pyment
-        fields = ("created_at", "course", "lesson", "amount", "pyment_method")
+        fields = ("created_at", "course", "lesson", "amount", "pyment_method", "status", "payment_url")
 
 
 class UserSerializer(ModelSerializer):
@@ -47,3 +57,14 @@ class UserRegisterSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "email", "username", "first_name", "last_name", "phone_number", "sity", "avatar", "password")
+
+
+class PaymentCreateSerializer(ModelSerializer):
+    """Сериализатор создания платежa"""
+
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Pyment
+        fields = "__all__"
+        validators = [payment_create_validator, payment_amount_validator]
