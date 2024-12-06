@@ -29,7 +29,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer: BaseSerializer) -> Any:
         """Вызов оповещения пользователей при обновлении курса"""
         super().perform_update(serializer)
-        notify_users.delay(serializer.data)
+        notify_users.delay(serializer.data["id"], serializer.data["name"])
 
     def get_permissions(self) -> Any:
         """Права доступа в зависимости от действия"""
@@ -88,6 +88,12 @@ class LessonUpdate(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = serializers.LessonSerializer
     permission_classes = [IsAuthenticated, IsOwnerUser | IsModeratorUser]
+
+    def perform_update(self, serializer: BaseSerializer) -> Any:
+        """Вызов оповещения пользователей при обновлении курса"""
+        super().perform_update(serializer)
+        course = Course.objects.get(pk=serializer.data["course"])
+        notify_users.delay(course.pk, course.name)
 
 
 class LessonDestroy(generics.DestroyAPIView):
