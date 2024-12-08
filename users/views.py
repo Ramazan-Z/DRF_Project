@@ -1,15 +1,32 @@
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users import serializers, services
 from users.models import Pyment, User
 from users.permissions import ProfilePermissionsClass
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """Контроллер получения токена авторизации"""
+
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        """Переопределение метода для установки даты последнего входа"""
+        response = super().post(request, *args, **kwargs)
+        user = get_object_or_404(User, email=request.data.get("email"))
+        user.last_login = timezone.now()
+        user.save()
+        return response
 
 
 class UserViewSet(viewsets.ModelViewSet):
