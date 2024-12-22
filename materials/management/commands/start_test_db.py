@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = "Creating and filling out a test database"
 
     def handle(self, *args: Any, **kwargs: Any) -> None:
-        call_command("create_db")
+        # call_command("create_db")
         call_command("migrate")
         call_command("add_test_data")
         self.stdout.write(self.style.SUCCESS("The database is ready for use"))
