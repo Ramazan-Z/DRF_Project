@@ -21,6 +21,7 @@ stripe = "^11.3.0"
 django-cors-headers = "^4.6.0"
 celery = "^5.4.0"
 django-celery-beat = "^2.7.0"
+gunicorn = "^23.0.0"
 
 
 [tool.poetry.group.lint.dependencies]
