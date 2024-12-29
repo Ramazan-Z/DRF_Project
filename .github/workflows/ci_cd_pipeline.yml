@@ -70,6 +70,7 @@ jobs:
             - name: Copy project files to server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+                    cd ${{ secrets.DEPLOY_DIR }}
                     git pull
                   EOF
             - name: Install dependencies on server
