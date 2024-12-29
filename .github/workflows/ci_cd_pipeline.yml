@@ -68,7 +68,10 @@ jobs:
               with:
                   ssh-private-key: ${{ secrets.SSH_KEY }}
             - name: Copy project files to server
-              run: rsync -avz --exclude '__pycache__' . ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}
+              run: |
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+                    git clone
+                  EOF
             - name: Install dependencies on server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
