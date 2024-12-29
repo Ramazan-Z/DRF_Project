@@ -58,8 +58,6 @@ jobs:
                   envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
                   fail_on_empty: true
             - name: Run migrations
-              run: |
-                source ${{ steps.pyenv.outputs.pyenv }}/activate
-                python manage.py migrate
+              run: python manage.py migrate
             - name: Run tests
               run: python manage.py test
