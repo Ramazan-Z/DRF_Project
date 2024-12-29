@@ -34,6 +34,8 @@ jobs:
                   redis-version: "latest"
             - name: Install poetry
               uses: abatilo/actions-poetry@v2.1.4
+            - name: Add Poetry to $PATH
+              run: export PATH="/root/.local/bin:$PATH"
             - name: Install dependencies
               id: pyenv
               uses: Steffo99/actions-poetry-deps@0.2.3
