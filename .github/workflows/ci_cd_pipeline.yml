@@ -57,7 +57,5 @@ jobs:
                   envkey_EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
                   envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
                   fail_on_empty: true
-            - name: Run migrations
-              run: poetry run python manage.py migrate
             - name: Run tests
               run: poetry run python manage.py test
