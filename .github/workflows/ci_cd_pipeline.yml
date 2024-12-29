@@ -87,6 +87,7 @@ jobs:
                     cd ${{ secrets.DEPLOY_DIR }}
                     export PATH="/root/.local/bin:$PATH"
                     poetry shell
+                    python3 manage.py makemigrations
                     python3 manage.py migrate
                   EOF
             - name: Collect static files on server
