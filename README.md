@@ -50,6 +50,11 @@
 2. Обернуть в Docker Compose Django-проект с БД PostgreSQL.
 3. Дописать в docker-compose.yaml работу с Redis.
 4. Дописать в docker-compose.yaml работу с Celery.
+### 35.2 CI/CD и GitHub Actions
+1. Настроить удаленный сервер для работы с веб-приложением.
+2. Создать и настроить файл GitHub Actions workflow, который будет:
+	* Запускать тесты проекта автоматически при каждом push в репозиторий.
+	* Автоматически деплоить проект на удаленный сервер после успешного прохождения тестов.
 ## Линтеры
 * `flake8`
 * `black`
@@ -74,6 +79,7 @@
 * `django-cors-headers`
 * `celery`
 * `django-celery-beat`
+* `gunicorn`
 ## Установка
 1. Клонировать проект
 	```
